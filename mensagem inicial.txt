@@ -1,0 +1,25 @@
+
+    printf("\n");
+    printf("   /$$$$$$$$ /$$                                                                                  \n");
+    printf("  |__  $$__/| $$                                                                                  \n");
+    printf("     | $$   | $$$$$$$   /$$$$$$         /$$$$$$   /$$$$$$$  /$$$$$$$  /$$$$$$   /$$$$$$   /$$$$$$ \n");
+    printf("     | $$   | $$__  $$ /$$__  $$       /$$__  $$ /$$_____/ /$$_____/ |____  $$ /$$__  $$ /$$__  $$\n");
+    printf("     | $$   | $$  \\ $$| $$$$$$$$      | $$$$$$$$|  $$$$$$ | $$        /$$$$$$$| $$  \\ $$| $$$$$$$$\n");
+    printf("     | $$   | $$  | $$| $$_____/      | $$_____/ \\____  $$| $$       /$$__  $$| $$  | $$| $$_____/\n");
+    printf("     | $$   | $$  | $$|  $$$$$$$      |  $$$$$$$ /$$$$$$$/|  $$$$$$$|  $$$$$$$| $$$$$$$/|  $$$$$$$\n");
+    printf("     |__/   |__/  |__/ \\_______/       \\_______/|_______/  \\_______/ \\_______/| $$____/  \\_______/\n");
+    printf("                                                                              | $$                \n");
+    printf("                                                                              | $$                \n");
+    printf("                                                                              |__/                \n");
+    printf("  ................................................................................................\n");
+    printf("  ================================================================================================\n");
+    printf("  ||   The noise wakes you up in your cell. Distant sounds of struggle indicate that something  ||\n");
+    printf("  || serious is happening. A metallic click is heard and you realize that all the doors of your ||\n");
+    printf("  ||                  cell block have been unlocked! You now have two choices:                  ||\n");
+    printf("  ||                                                                                            ||\n");
+    printf("  ||           Hide in the shadows of an unlocked cell, on a dangerous revolted prison          ||\n");
+    printf("  ||                                            OR                                              ||\n");
+    printf("  ||         Confront furious inmates and armed guards, to reach the light of the exit.         ||\n");
+    printf("  ||                                                                                            ||\n");
+    printf("  ||                               IT'S TIME TO MAKE YOUR CHOICE!                               ||\n");
+    printf("  ================================================================================================\n\n");
