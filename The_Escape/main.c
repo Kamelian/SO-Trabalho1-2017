@@ -79,7 +79,7 @@ void PrintMonster(struct Monster monster);
 
 // Initialization
 void InitializePlayer(struct Player *pplayer);
-void InitializeMap(struct Cell cells[], int *pnCells); //nÃ£o Ã© preciso ponteiro, porque o vector jÃ¡ Ã© um ponteiro
+void InitializeMap(struct Cell cells[], int *pnCells); //não é preciso ponteiro, porque o vector já é um ponteiro
 void InitializeObject(struct Object object[], int *pnObjects);
 void InitializeMonster(struct Monster *pmonster);
 
@@ -128,11 +128,11 @@ int main() {
         MovePlayer(&player, cells);
         GrabObject(&player, cells, objects);
         MoveMonster(&monster, cells);
+        Combat(&player, &monster);
+
         //combate
         //verificar fim de jogo
     }
-
-    system("pause");
 
     return 0;
 }
@@ -194,7 +194,7 @@ void PrintPlayer(struct Player player) {
 }
 
 void InitializeMap(struct Cell cells[], int *pnCells) {
-    *pnCells = 20; //define o nÂº de cÃ©lulas do mapa
+    *pnCells = 20; //define o nº de células do mapa
 
     // Cell 0 - Maximum 1
     cells[0].north = -1;
@@ -236,7 +236,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[3].east = 4;
     cells[3].up = 18; // Airduct 1
     cells[3].down = -1;
-    strcpy(cells[3].cellDescription, "\nYou are in maximum security block.\n\n");
+    strcpy(cells[3].cellDescription, "\nYou are in maximum security block.\n\nYou can see the tell tell signs from the riot group that passed trough where.");
     cells[3].object = -1;
     cells[3].treasure = -1;
 
@@ -247,7 +247,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[4].east = 5;
     cells[4].up = -1;
     cells[4].down = 17; // Tunel 4
-    strcpy(cells[4].cellDescription, "EstÃ¡s no pÃ¡tio da prisÃ£o");
+    strcpy(cells[4].cellDescription, "\nYou are in the prisons yard.\n\nYou see some inmates hidding in the shadows.");
     cells[4].object = -1;
     cells[4].treasure = -1;
 
@@ -258,7 +258,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[5].east = 7;
     cells[5].up = -1;
     cells[5].down = -1;
-    strcpy(cells[5].cellDescription, "EstÃ¡s na ala de seguranÃ§a mÃ­nima.");
+    strcpy(cells[5].cellDescription, "\nYou are in the minimal security block.\n\nEverything is calm here, these are not the real bad guys of this prison.");
     cells[5].object = -1;
     cells[5].treasure = -1;
 
@@ -269,7 +269,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[6].east = -1;
     cells[6].up = -1;
     cells[6].down = -1;
-    strcpy(cells[6].cellDescription, "Cela Minima 1");
+    strcpy(cells[6].cellDescription, "\nYou are in minimal security cell n.1.\n\n");
     cells[6].object = -1;
     cells[6].treasure = -1;
 
@@ -291,7 +291,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[8].east = -1;
     cells[8].up = -1;
     cells[8].down = 16; // Tunel 3
-    strcpy(cells[8].cellDescription, "Cela MÃ­nima 3");
+    strcpy(cells[8].cellDescription, "\nYou are in minimal security cell n.3.\n\nSomething draws your attention on under the bed.");
     cells[8].object = -1;
     cells[8].treasure = -1;
 
@@ -313,7 +313,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[10].east = 9;
     cells[10].up = 19; // Airduct 2
     cells[10].down = -1;
-    strcpy(cells[10].cellDescription, "EstÃ¡s na Lavandaria");
+    strcpy(cells[10].cellDescription, "Estás na Lavandaria");
     cells[10].object = 2; //uniform
     cells[10].treasure = -1;
 
@@ -324,7 +324,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[11].east = -1;
     cells[11].up = -1;
     cells[11].down = -1;
-    strcpy(cells[11].cellDescription, "EstÃ¡s no refeitÃ³rio");
+    strcpy(cells[11].cellDescription, "Estás no refeitório");
     cells[11].object = 1; // Metal tray
     cells[11].treasure = -1;
 
@@ -335,7 +335,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[12].east = -1;
     cells[12].up = -1;
     cells[12].down = -1;
-    strcpy(cells[12].cellDescription, "EstÃ¡s na sala dos guardas");
+    strcpy(cells[12].cellDescription, "Estás na sala dos guardas");
     cells[12].object = -1;
     cells[12].treasure = -1;
 
@@ -346,7 +346,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[13].east = -1;
     cells[13].up = -1;
     cells[13].down = 15; //Tunel 2
-    strcpy(cells[13].cellDescription, "EstÃ¡s em frente ao portÃ£o de saÃ­da");
+    strcpy(cells[13].cellDescription, "Estás em frente ao portão de saída");
     cells[13].object = -1;
     cells[13].treasure = -1;
 
@@ -357,7 +357,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[14].east = -1;
     cells[14].up = 1;
     cells[14].down = -1;
-    strcpy(cells[14].cellDescription, "EstÃ¡s no tunel 1");
+    strcpy(cells[14].cellDescription, "Estás no tunel 1");
     cells[14].object = -1;
     cells[14].treasure = -1;
 
@@ -368,7 +368,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[15].east = -1;
     cells[15].up = 10; // laudry
     cells[15].down = -1;
-    strcpy(cells[15].cellDescription, "EstÃ¡s no tunel 2");
+    strcpy(cells[15].cellDescription, "Estás no tunel 2");
     cells[15].object = -1;
     cells[15].treasure = -1;
 
@@ -379,7 +379,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[16].east = -1;
     cells[16].up = 8; // Minimum 3
     cells[16].down = -1;
-    strcpy(cells[16].cellDescription, "EstÃ¡s no tunel 3");
+    strcpy(cells[16].cellDescription, "Estás no tunel 3");
     cells[16].object = -1;
     cells[16].treasure = -1;
 
@@ -390,7 +390,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[17].east = 16;
     cells[17].up = 4; // Yard
     cells[17].down = -1;
-    strcpy(cells[17].cellDescription, "EstÃ¡s no tunel 4");
+    strcpy(cells[17].cellDescription, "Estás no tunel 4");
     cells[17].object = -1;
     cells[17].treasure = -1;
 
@@ -401,7 +401,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[18].east = -1;
     cells[18].up = -1;
     cells[18].down = 3; // Maximum 3
-    strcpy(cells[18].cellDescription, "EstÃ¡s na conduta de ventilaÃ§Ã£o 1");
+    strcpy(cells[18].cellDescription, "Estás na conduta de ventilação 1");
     cells[18].object = -1;
     cells[18].treasure = -1;
 
@@ -412,7 +412,7 @@ void InitializeMap(struct Cell cells[], int *pnCells) {
     cells[19].east = -1;
     cells[19].up = -1;
     cells[19].down = 10; // Laundry room
-    strcpy(cells[19].cellDescription, "EstÃ¡s na conduta de ventilaÃ§Ã£o 2");
+    strcpy(cells[19].cellDescription, "Estás na conduta de ventilação 2");
     cells[19].object = -1;
     cells[19].treasure = -1;
 }
@@ -542,12 +542,12 @@ void MovePlayer(struct Player *pplayer, struct Cell cells[]) {
 
     printf("\n%s", cells[(*pplayer).location].cellDescription);
 
-    //O mÃ©todo GRABOBJECT podia ser chamado aqui dentro??
-    //Assim o GRABOBJECT nÃ£o precisava de ser executado em cada iteraÃ§Ã£o do loop while que existe no main.
+    //O método GRABOBJECT podia ser chamado aqui dentro??
+    //Assim o GRABOBJECT não precisava de ser executado em cada iteração do loop while que existe no main.
 
-    //O mÃ©todo GRABTRESAURE podia ser chamado aqui e o GRABTRESAURE chamava o HACK COMPUTER?
-    //Parece fazer mais sentido com o enunciado, o jogador apanha o tesouro (sÃ³ quando o encontra), nÃ£o existe condiÃ§Ã£o a correr no while Loop do main
-    //e sÃ³ depois Ã© chamada uma funÃ§Ã£o auxiliar que Ã© o HackComputer
+    //O método GRABTRESAURE podia ser chamado aqui e o GRABTRESAURE chamava o HACK COMPUTER?
+    //Parece fazer mais sentido com o enunciado, o jogador apanha o tesouro (só quando o encontra), não existe condição a correr no while Loop do main
+    //e só depois é chamada uma função auxiliar que é o HackComputer
 
 
 
@@ -620,28 +620,34 @@ void MoveMonster(struct Monster *pmonster, struct Cell cells[]) {
     printf("\nDestino do monstro:%s\n", cells[(*pmonster).location].cellDescription); //DEBUGGING
 }
 
-void combat(struct Player *pplayer, struct Monster *pmonster) {
+void Combat(struct Player *pplayer, struct Monster *pmonster) {
     if((*pplayer).location==(*pmonster).location && (*pplayer).visibility > 0) {
         printf("In the middle of the confusion your bitter enemy %s has found you.\nA fight between the two of you is inevitable", (*pmonster).name);
         int damage = 0;
         int roundCounter = 0;
-        do{
-            damage = AttackMove(*pplayer, *pmonster, roundCounter%2);
 
-            if((*pplayer).health == 0){
-                printf("\nThe fight was brutal! And in the end you lie back in your cell in a pool of your own blood. Your attempt to escape has been brought to an end. \nBut at least you live to fight another day.");
-                printf("\n\n\nTHE END");
-            }else if((*pmonster).health == 0){
-                printf("\nThe fight was brutal! But the Jailer lies on the floor in a pool of is own blood. Your attempt to escape has just become a little more easier. \nYou start to feel that maybe you'll the little of day!");
-            }else if(roundCounter%2 == 0){ // roundCounter % 2 = 0, monster attacks
+        do{
+            damage = AttackMove(&*pplayer, &*pmonster, roundCounter%2);
+
+
+            if(roundCounter%2 == 0){ // roundCounter % 2 = 0, monster attacks
                 printf("The jailer throws at you. You prepare to receive the blow.");
                 (*pplayer).health -= damage;
                 printf("\nYou get a hard blow! \nYou feel %d of your health leave you. Now you only have %d health\n", damage, (*pplayer).health);
-            }else if(roundCounter%2 == 0){ // roundCounter % 2 = 1, player attacks
+            }else if(roundCounter%2 == 1){ // roundCounter % 2 = 1, player attacks
                 (*pmonster).health -= damage;
                 printf("You hit him with a well-placed blow! \nHe looks more tired, like %d of is health left him. Now the Jailer only has %d health", damage, (*pplayer).health);
             }
-        }while ((*pplayer).health != 0 || (*pmonster).health != 0);
+
+        }while ((*pplayer).health > 0 && (*pmonster).health > 0);
+
+        if((*pplayer).health <= 0){
+            printf("\nThe fight was brutal! And in the end you lie back in your cell in a pool of your own blood. Your attempt to escape has been brought to an end. \nBut at least you live to fight another day.");
+            printf("\n\n\nTHE END");
+        }else if((*pmonster).health <= 0){
+            printf("\nThe fight was brutal! But the Jailer lies on the floor in a pool of is own blood. Your attempt to escape has just become a little more easier. \nYou start to feel that maybe you'll the little of day!");
+        }
+
     } else if((*pplayer).location==(*pmonster).location && (*pplayer).visibility == 0) {
         printf("In the middle of the confusion your bitter enemy %s has found you.\nBut your disguise has a prison guard, allows you to slip his wrath.", (*pmonster).name);
     }
@@ -650,7 +656,11 @@ void combat(struct Player *pplayer, struct Monster *pmonster) {
 int EndGame(struct Player *pplayer, struct Cell cells[]) {
     if( (*pplayer).treasure == 1 && (*pplayer).location == 13 ) {
         return 1;
-    } else {
+    }
+    if ((*pplayer).health <=0){
+        return 1;
+    }
+    else {
         return 0;
     }
 }
@@ -695,7 +705,7 @@ void HackComputer(struct Cell cells[], struct Player *pPlayer) {
     do {
         char answer[255];
         printf("Insert personal code: \n");
-        scanf("%s", &answer);
+        scanf("%s", answer);
 
         if (strcmp(answer, date)!=0) {
             printf("Wrong code\n");
@@ -715,17 +725,17 @@ void HackComputer(struct Cell cells[], struct Player *pPlayer) {
 
 }
 
-int AttackMove(struct Player *pplayer, struct Monster *pmonster, int attacker){ //sÃ³ quero ler os valores
+int AttackMove(struct Player *pplayer, struct Monster *pmonster, int attacker){ //só quero ler os valores
 
     int multiplier = RandomNumber(6);
     printf("\nMULTIPLIER IS:%d\n", multiplier);  //DEBUGGING
     int damage = 0;
 
     if (attacker == 1){
-        damage = ((player).offence / 10) * multiplier - (((monster).defense/100)) * (multiplier + 5);
+        damage = ((*pplayer).offence / 10) * multiplier - (((*pmonster).defense/100)) * (multiplier + 5);
         printf("Player makes a damage of %d\n", damage);
     }else{
-        damage = ((monster).offence / 10) * multiplier - (((player).defence/100)) * (multiplier + 5);
+        damage = ((*pmonster).offence / 10) * multiplier - (((*pplayer).defence/100)) * (multiplier + 5);
         printf("Monster makes a damage of %d\n", damage);
     }
 
