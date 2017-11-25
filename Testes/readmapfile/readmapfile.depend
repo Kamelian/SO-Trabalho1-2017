@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1511455710 source:c:\eng, informatica\2017-2018\so\so-trabalho1-2017\testes\readmapfile\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+	<windows.h>
+	<time.h>
+
