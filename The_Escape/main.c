@@ -7,7 +7,7 @@
 #include <time.h>
 
 #define MAX_PLAYER_NAME 100
-#define PLAYER_INITIAL_HEALTH 100
+#define PLAYER_INITIAL_HEALTH 150
 #define PLAYER_INITIAL_OFFENCE 100
 #define PLAYER_INITIAL_DEFENSE 100
 #define PLAYER_INITIAL_VISIBILITY 1
@@ -84,11 +84,9 @@ int InitializeMap(struct Cell cells[]); //não é preciso ponteiro, porque o vecto
 int InitializeObject(struct Object object[]); //, int *pnObjects);
 void InitializeMonster(struct Monster *pmonster);
 
-// main loop
-
+// main
 void PrintTitle();
 void PrintTitleText();
-
 void MovePlayer(struct Player *pplayer, struct Cell cells[], struct Object objects[]);
 void MoveMonster(struct Monster *pmonster, struct Cell cells[]);
 void GrabObject(struct Player *pplayer, struct Cell cells[], struct Object object[]);
@@ -102,12 +100,10 @@ void GrabTreasure(struct Player *pplayer, struct Cell cells[]);
 void HackComputer(struct Cell cells[], struct Player *pPlayer);
 int AttackMove(struct Player *pplayer, struct Monster *pmonster, int attacker);
 
-int superFlag = 0;
+int superFlag = 0; // flags the use of superuser mode , or was i like to call it the Andy Dufresne mode - http://www.imdb.com/title/tt0111161/
 
 int main(int argc, char *argv[]) {
-
-    setlocale(LC_ALL, "Portuguese");
-    system("MODE 103,1040");
+    system("MODE 103,60"); //This is only useed to get a correct console screen width, otherwise the ascii gets messed up
 
     struct Player player;
     struct Cell cells[MAX_CELLS];
@@ -115,8 +111,6 @@ int main(int argc, char *argv[]) {
     struct Monster monster;
 
     int nCells, nObjects;
-
-    //nObjects = 3;
 
     PrintTitle();
     PrintTitleText();
@@ -129,20 +123,17 @@ int main(int argc, char *argv[]) {
 
     nObjects = InitializeObject(objects); //, &nObjects);
     //PrintObject(objects, nObjects);
-
-
-    //addObjectToPlayer(&player, objects, atoi(argv[4]));
+    //addObjectToPlayer(&player, objects, atoi(argv[4])); //DEBUGGIN
 
     InitializeMonster(&monster);
     //PrintMonster(monster);
 
-    while (EndGame(&player, cells) == 0) {
+    // loop that makes the black magic work
+    while (EndGame(&player, cells) == 0){
         MovePlayer(&player, cells, objects);
         MoveMonster(&monster, cells);
         Combat(&player, &monster);
-        //ClearScreen();
     }
-
     return 0;
 }
 
@@ -164,39 +155,31 @@ void PrintTitleText() {
     }
 }
 
-void ClearScreen(){ //NOT USED APAGAR
-    int line;
-    int collumn;
-    for (line = 0; line <=50; line++){
-        for(collumn = 0; collumn <= 100; collumn++){
-            printf("%c",' ');
-        }
-        printf("\n");
-    }
-}
-
 void InitializePlayer(struct Player *pplayer, char *argv[], int argc) {
     printf("\n\n  Enter your convict name: ");
     fflush(stdin);
     scanf("%s", (*pplayer).name);
 
+    (*pplayer).offence = PLAYER_INITIAL_OFFENCE;
+    (*pplayer).defence = PLAYER_INITIAL_DEFENSE;
+    (*pplayer).visibility = PLAYER_INITIAL_VISIBILITY;
+    (*pplayer).item2 = PLAYER_INITIAL_OBJECT;
+    (*pplayer).item3 = PLAYER_INITIAL_OBJECT;
+    (*pplayer).treasure = PLAYER_INITIAL_TREASURE;
+
     if(argv[1]!= '\0' && atoi(argv[1]) == 1234 && argc == 5){
         (*pplayer).health = atoi(argv[2]);
         (*pplayer).location = atoi(argv[3]);
         (*pplayer).item1 = atoi(argv[4]);
+        PrintPlayer(*pplayer);
         superFlag =1;
+
     }else{
         (*pplayer).health = PLAYER_INITIAL_HEALTH;
         (*pplayer).location = PLAYER_INITIAL_CELL;
         (*pplayer).item1 = PLAYER_INITIAL_OBJECT;
     }
-        (*pplayer).offence = PLAYER_INITIAL_OFFENCE;
-        (*pplayer).defence = PLAYER_INITIAL_DEFENSE;
-        (*pplayer).visibility = PLAYER_INITIAL_VISIBILITY;
-        (*pplayer).item2 = PLAYER_INITIAL_OBJECT;
-        (*pplayer).item3 = PLAYER_INITIAL_OBJECT;
-        (*pplayer).treasure = PLAYER_INITIAL_TREASURE;
-    //PrintPlayer(*pplayer);
+
 }
 
 void PrintPlayer(struct Player player) {
@@ -240,7 +223,6 @@ int InitializeMap(struct Cell cells[]) {
             }
         }
         cells[nCells].cellDescription[strlen(cells[nCells].cellDescription) - 1] = 0;
-        //printf("\n %s\n", cells[nCells].cellDescription);
         nCells++;
     }
 
@@ -329,7 +311,6 @@ void PrintMonster(struct Monster monster) {
 void MovePlayer(struct Player *pplayer, struct Cell cells[], struct Object objects[]) {
 
     printf("\n  ##################################################################################################  \n");
-
     printf("\n%s\n\n", cells[(*pplayer).location].cellDescription);
 
     char moveOptions[60] = "What door do you want to cross?";
@@ -339,9 +320,11 @@ void MovePlayer(struct Player *pplayer, struct Cell cells[], struct Object objec
     char moveWest[5] = " [W]";
     char moveUp[5] = " [U]";
     char moveDown[5] = " [D]";
-    char choosenDoor;
-    char possibleChoices[12] = "";
 
+    char possibleChoices[12] = ""; // Door choices in current cell
+    char choosenDoor;
+
+    // >Concatenates a string with the available door options to move
     if(cells[(*pplayer).location].north != -1) {
         strcat(moveOptions, moveNorth);
         strcat(possibleChoices, "nN");
@@ -387,19 +370,8 @@ void MovePlayer(struct Player *pplayer, struct Cell cells[], struct Object objec
         (*pplayer).location = cells[(*pplayer).location].down;
     }
 
-    //printf("\n%s", cells[(*pplayer).location].cellDescription);
-
-    GrabObject(&*pplayer,cells, objects);
-
-    //O método GRABTRESAURE podia ser chamado aqui e o GRABTRESAURE chamava o HACK COMPUTER?
-    //Parece fazer mais sentido com o enunciado, o jogador apanha o tesouro (só quando o encontra), não existe condição a correr no while Loop do main
-    //e só depois é chamada uma função auxiliar que é o HackComputer
-
-
-
-    if (pplayer->location == 12) {
-        HackComputer(cells, &*pplayer);
-    }
+    GrabObject(&*pplayer,cells, objects); //Checks for objects at enterring a new cell
+    GrabTreasure(&*pplayer,cells); //Checks for tresaure at enterring a new cell
 }
 
 void GrabObject(struct Player *pplayer, struct Cell cells[], struct Object object[]) {
@@ -418,21 +390,22 @@ void GrabObject(struct Player *pplayer, struct Cell cells[], struct Object objec
         } else if((*pplayer).item3 == -1) {
             (*pplayer).item3 = cells[(*pplayer).location].object;
         }
-        PrintPlayer(*pplayer);  //DEBUGGING
+        //PrintPlayer(*pplayer);  //DEBUGGING
     }
 }
 
-void addObjectToPlayer(struct Player *pplayer, struct Object object[], int idObject){
-        if(superFlag == 1){
-            (*pplayer).offence += object[idObject].offenceBonus;
-            (*pplayer).defence += object[idObject].defenceBonus;
-            (*pplayer).visibility += object[idObject].visibilityBonus;
-        }
+void GrabTreasure(struct Player *pplayer, struct Cell cells[]) {
+    if(cells[(*pplayer).location].treasure == 1) {
+        printf("\n%s\n\n", cells[(*pplayer).location].cellDescription);
+        HackComputer(cells, &*pplayer);
+    }
 }
 
 void MoveMonster(struct Monster *pmonster, struct Cell cells[]) {
 
-    //printf("\nOrigem do monstro:%s\n", cells[(*pmonster).location].cellDescription); //DEBUGGING
+    if(superFlag == 1){
+    printf("\n%s was in cell number:%d\n", (*pmonster).name, (*pmonster).location);
+    }
 
     char possibleChoices[6] = "";
     int numberOfExits;
@@ -469,36 +442,45 @@ void MoveMonster(struct Monster *pmonster, struct Cell cells[]) {
         (*pmonster).location = cells[(*pmonster).location].down;
     }
 
-    //printf("\nDestino do monstro:%s\n", cells[(*pmonster).location].cellDescription); //DEBUGGING
+    if(superFlag == 1){
+    printf("\n%s is now in cell number:%d\n", (*pmonster).name, (*pmonster).location);
+    }
 }
 
 void Combat(struct Player *pplayer, struct Monster *pmonster) {
     if((*pplayer).location==(*pmonster).location && (*pplayer).visibility > 0) {
-        printf("In the middle of the confusion your bitter enemy %s has found you.\nA fight between the two of you is inevitable", (*pmonster).name);
+        printf("In the middle of the confusion your bitter enemy %s has found you.\nA fight between the two of you is inevitable\n", (*pmonster).name);
         int damage = 0;
         int roundCounter = 0;
-
+        char playerChoice;
         do{
+            printf("\n  --------------------------------------------------------------------------------------------------  \n");
             damage = AttackMove(&*pplayer, &*pmonster, roundCounter%2);
-
-
+            //printf("\nDamage is %d\n", damage); //DEBUGGING
             if(roundCounter%2 == 0){ // roundCounter % 2 = 0, monster attacks
-                printf("The jailer throws at you. You prepare to receive the blow.");
-                (*pplayer).health -= damage;
+                printf("\n%s throws at you. You prepare to receive the blow.", (*pmonster).name);
+                printf("\n%s does an attack move and makes a damage of %d\n", (*pmonster).name, damage);
+                (*pplayer).health = (*pplayer).health - damage;
                 printf("\nYou get a hard blow! \nYou feel %d of your health leave you. Now you only have %d health\n", damage, (*pplayer).health);
             }else if(roundCounter%2 == 1){ // roundCounter % 2 = 1, player attacks
-                (*pmonster).health -= damage;
-                printf("You hit him with a well-placed blow! \nHe looks more tired, like %d of is health left him. Now the Jailer only has %d health", damage, (*pplayer).health);
+                fflush(stdin);
+                printf("Do you want to attack(A) or defende(D)? ");
+                scanf("%c", &playerChoice);
+                if (playerChoice == 'A' || playerChoice == 'a') {
+                    printf("\n%s does an attack move and makes a damage of %d\n", (*pplayer).name, damage);
+                    (*pmonster).health = (*pmonster).health - damage;
+                    printf("\nYou hit him with a well-placed blow! \nHe looks more tired, like %d of is health left him. Now the Jailer only has %d health", damage, (*pplayer).health);
+                }else if (playerChoice == 'D' || playerChoice == 'd'){
+                    roundCounter++; //If player defends then we skip monster attack round
+                    printf("\n%s tries to hit you whit all of his strength, but you are able to dogde it. You still have %d", (*pmonster).name, (*pplayer).health);
+                }else{
+                    printf("That is not a choice, you must attack or defend, don't make an arse of yourself!");
+                }
             }
-
+            roundCounter++;
         }while ((*pplayer).health > 0 && (*pmonster).health > 0);
 
-        if((*pplayer).health <= 0){
-            printf("\nThe fight was brutal! And in the end you lie back in your cell in a pool of your own blood. Your attempt to escape has been brought to an end. \nBut at least you live to fight another day.");
-            printf("\n\n\nTHE END");
-        }else if((*pmonster).health <= 0){
-            printf("\nThe fight was brutal! But the Jailer lies on the floor in a pool of is own blood. Your attempt to escape has just become a little more easier. \nYou start to feel that maybe you'll the little of day!");
-        }
+        if((*pmonster).health <= 0){printf("\nThe fight was brutal! But %s lies on the floor in a pool of is own blood. Your attempt to escape has just become a little more easier. \nYou start to feel that maybe you'll the little of day!", (*pmonster).name);}
 
     } else if((*pplayer).location==(*pmonster).location && (*pplayer).visibility == 0) {
         printf("In the middle of the confusion your bitter enemy %s has found you.\nBut your disguise has a prison guard, allows you to slip his wrath.", (*pmonster).name);
@@ -507,9 +489,13 @@ void Combat(struct Player *pplayer, struct Monster *pmonster) {
 
 int EndGame(struct Player *pplayer, struct Cell cells[]) {
     if( (*pplayer).treasure == 1 && (*pplayer).location == 13 ) {
+        printf("\nYou reach the exit gate and they are wide open, now nothing will stopp your escape.");
+        printf("\n\n\nTHE END");
         return 1;
     }
     if ((*pplayer).health <=0){
+        printf("\nThe fight was brutal! And in the end you lie back in your cell in a pool of your own blood. Your attempt to escape has been brought to an end. \nBut at least you live to fight another day.");
+        printf("\n\n\nTHE END");
         return 1;
     }
     else {
@@ -527,28 +513,19 @@ int RandomNumber(int numberOfRandoms) {
     return randomNumber;
 }
 
-void GrabTreasure(struct Player *pplayer, struct Cell cells[]) {
-    if(cells[(*pplayer).location].treasure == 0) {
-        //A function that runs the computer ideia
-
-    }
-}
-
 void HackComputer(struct Cell cells[], struct Player *pPlayer) {
-    printf("Remenber people will allways be people\n");
     char date[10];
     char buffer[20];
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
 
     int i, n;
-
     i = tm.tm_mon + 1;
     n = tm.tm_mday;
 
-    itoa(i,buffer,10); //converts int to string
-    strcpy(date,buffer); //copies converteds int to a string
     itoa(n,buffer,10); //converts int to string
+    strcpy(date,buffer); //copies converteds int to a string
+    itoa(i,buffer,10); //converts int to string
     strcat(date,buffer); //concatenates int to string
     //printf("\n\nDATE: %s", date);  //DEBUGGING
 
@@ -558,41 +535,38 @@ void HackComputer(struct Cell cells[], struct Player *pPlayer) {
         char answer[255];
         printf("Insert personal code: \n");
         scanf("%s", answer);
-
         if (strcmp(answer, date)!=0) {
             printf("INCORRECT CODE\n");
             counter--;
             printf("\nYou have %d tries\n", counter);
         } else if(strcmp(answer, date)==0) {
-            printf("CORREC CODE\n");
-            cells[12].west = 13;
+            printf("CORRECT CODE\n");
             pPlayer->treasure = 1;
             counter=0;
-            printf("|nYou ear a loud unocking sound from outside the guard's room. You've just got the code right and the exit gate his opening.");
-
-            //MUDAR DESCRIÇÂO DA CELULA 13
-
+            printf("\nYou ear a loud unocking sound from outside the guard's room. You've just got the code right and the exit gate his opening.");
         } else {
             printf("\nHACK FALIED!");
         }
-
     } while (counter>0);
 
 }
 
-int AttackMove(struct Player *pplayer, struct Monster *pmonster, int attacker){ //só quero ler os valores
-
-    int multiplier = RandomNumber(6);
+int AttackMove(struct Player *pplayer, struct Monster *pmonster, int attacker){
+    int multiplier = RandomNumber(5) +1;
     printf("\nMULTIPLIER IS:%d\n", multiplier);  //DEBUGGING
     int damage = 0;
-
     if (attacker == 1){
-        damage = ((*pplayer).offence / 10) * multiplier - (((*pmonster).defense/100)) * (multiplier + 5);
-        printf("Player makes a damage of %d\n", damage);
+        damage = ((*pplayer).offence / 10) * multiplier - (((*pmonster).defense/100)) * (multiplier + 5); // Player does damage
     }else{
-        damage = ((*pmonster).offence / 10) * multiplier - (((*pplayer).defence/100)) * (multiplier + 5);
-        printf("Monster makes a damage of %d\n", damage);
+        damage = ((*pmonster).offence / 10) * multiplier - (((*pplayer).defence/100)) * (multiplier + 5); // Monster does damage
     }
-
     return damage;
+}
+
+void addObjectToPlayer(struct Player *pplayer, struct Object object[], int idObject){
+        if(superFlag == 1){
+            (*pplayer).offence += object[idObject].offenceBonus; //In super user mode adds the object bonus to the player
+            (*pplayer).defence += object[idObject].defenceBonus;
+            (*pplayer).visibility += object[idObject].visibilityBonus;
+        }
 }
