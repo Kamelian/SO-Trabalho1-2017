@@ -68,9 +68,6 @@ struct Monster {
     int location;
 };
 
-//void PrintTitle();
-//void PrintTitleText();
-
 //Debugging methods that should be commented
 void PrintPlayer(struct Player player);
 void PrintMap(struct Cell cells[], int nCells);
@@ -553,7 +550,7 @@ void HackComputer(struct Cell cells[], struct Player *pPlayer) {
 
 int AttackMove(struct Player *pplayer, struct Monster *pmonster, int attacker){
     int multiplier = RandomNumber(5) +1;
-    printf("\nMULTIPLIER IS:%d\n", multiplier);  //DEBUGGING
+    //printf("\nMULTIPLIER IS:%d\n", multiplier);  //DEBUGGING
     int damage = 0;
     if (attacker == 1){
         damage = ((*pplayer).offence / 10) * multiplier - (((*pmonster).defense/100)) * (multiplier + 5); // Player does damage
