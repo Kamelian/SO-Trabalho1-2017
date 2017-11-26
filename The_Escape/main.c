@@ -330,6 +330,8 @@ void MovePlayer(struct Player *pplayer, struct Cell cells[], struct Object objec
 
     printf("\n  ##################################################################################################  \n");
 
+    printf("\n%s\n\n", cells[(*pplayer).location].cellDescription);
+
     char moveOptions[60] = "What door do you want to cross?";
     char moveNorth[5] = " [N]";
     char moveEast[5] = " [E]";
@@ -385,7 +387,7 @@ void MovePlayer(struct Player *pplayer, struct Cell cells[], struct Object objec
         (*pplayer).location = cells[(*pplayer).location].down;
     }
 
-    printf("\n%s", cells[(*pplayer).location].cellDescription);
+    //printf("\n%s", cells[(*pplayer).location].cellDescription);
 
     GrabObject(&*pplayer,cells, objects);
 
@@ -430,7 +432,7 @@ void addObjectToPlayer(struct Player *pplayer, struct Object object[], int idObj
 
 void MoveMonster(struct Monster *pmonster, struct Cell cells[]) {
 
-    printf("\nOrigem do monstro:%s\n", cells[(*pmonster).location].cellDescription); //DEBUGGING
+    //printf("\nOrigem do monstro:%s\n", cells[(*pmonster).location].cellDescription); //DEBUGGING
 
     char possibleChoices[6] = "";
     int numberOfExits;
@@ -467,7 +469,7 @@ void MoveMonster(struct Monster *pmonster, struct Cell cells[]) {
         (*pmonster).location = cells[(*pmonster).location].down;
     }
 
-    printf("\nDestino do monstro:%s\n", cells[(*pmonster).location].cellDescription); //DEBUGGING
+    //printf("\nDestino do monstro:%s\n", cells[(*pmonster).location].cellDescription); //DEBUGGING
 }
 
 void Combat(struct Player *pplayer, struct Monster *pmonster) {

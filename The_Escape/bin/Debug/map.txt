@@ -1,66 +1,110 @@
 -1 3 -1 -1 -1 -1  -1 -1
 You are in the familiar confines of your cell.
-After nine years watching the sky through those bars,you still ask yourself: "Why do i have to pay for another men's crime.
+ 
+After nine years watching the sky through those bars,you still ask yourself: 
+"Why do i have to pay for another men's crime.
 
 -1 -1 -1 3 -1 14  -1 -1
 You are in maximum security cell n.2.
-The cell organization of the bank robber, whom you consider your only friend in this hell hole, fell's upon you. But you notice something strange!
+ 
+The cell organization of the bank robber, whom you consider your only friend in this hell hole, fell's upon you. 
+But you notice something strange!
 
 3 -1 -1 -1 18 -1 -1 -1
 You are in maximum security cell n.3.
-The bunk bed was put up against the wall. At first you do not understand why, but as you study the cell, you realize that there was a purpose for this action.
+ 
+The bunk bed was put up against the wall. 
+At first you do not understand why, but as you study the cell, you realize that there was a purpose for this action.
 
 0 2 1 4 -1 -1 -1 -1
 You are in maximum security block.
+ 
 You can see the tell tell signs from the riot group that passed trough where.
 
 -1 9 3 5 -1 17 -1 -1
-You are in the prisons yard. You see some inmates hidding in the shadows, they must fear something.
+You are in the prisons yard.
+  
+You see some inmates hidding in the shadows, they must fear something.
 
 6 8 4 7 -1 -1 -1 -1
 You are in the minimal security block.
+ 
 Everything is calm here, these are not the real bad guys of this prison.
 
 -1 5 -1 -1 -1 -1 -1 -1
-You are in minimal security cell n.1. 
-A little man tries to grab you from behind, but you easily subjugate him. He begs you not to kill him, he's just an orderly dick. 
+You are in minimal security cell n.1.
+ 
+A little man tries to grab you from behind, but you easily subjugate him. 
+He begs you not to kill him, he's just an orderly dick. 
 
 -1 -1 5 -1 -1 -1 0 -1
 You are in minimal security cell n.2.
-A scent of death attacks your nostrils. Full of wounds, he sees the lifeless body of the infamous prisoner of the cell 3. Children killers are not tolerated by the other prisoners. A metallic gleam captures your attention! a sharp screwdriver! This can be a good weapon to help you.
+ 
+A scent of death attacks your nostrils. Full of wounds, he sees the lifeless body of the infamous prisoner of the cell 3. 
+Children killers are not tolerated by the other prisoners. 
+A metallic gleam captures your attention! a sharp screwdriver! This can be a good weapon to help you.
 
 5 -1 -1 -1 -1 16 -1 -1
-You are in minimal security cell n.3. The cell is filthy, there is dust and dirt everywhere. Something draws your attention on under the bed.
+You are in minimal security cell n.3.
+ 
+The cell is filthy, there is dust and dirt everywhere. Something draws your attention on under the bed.
 
 4 12 10 11 -1 -1 -1 -1
-You are in the prison hall. Usually there would be at least 6 armed guards patrolling, but with the prisoners released, they were called to other sites.
+You are in the prison hall.
+ 
+Usually there would be at least 6 armed guards patrolling, but with the prisoners released, they were called to other sites.
 
 -1 -1 -1 9 19 15 2 -1
-You're in the prison laundry. You notice that many of the bottles of bleach and detergent have disappeared. Maybe some of the inmates have enough chemistry to make some homemade bombs. Underneath a fallen basket you see a blue fabric, is it really what you're thinking?
+You're in the prison laundry.
+ 
+You notice that many of the bottles of bleach and detergent have disappeared. 
+Maybe some of the inmates have enough chemistry to make some homemade bombs. 
+Underneath a fallen basket you see a blue fabric, is it really what you're thinking?
 
 -1 -1 9 -1 -1 -1 1 -1
-You're in the prison mess hall. A group of prisoners is building a barricade in the kitchen. They ask you if you want to join them, but you decline the invitation for fear of being stuck between a wall and a difficult situation. One of the group throws you a metal tray, so you can protect yourself if you encounter problems. You appreciate the gesture.
+You're in the prison mess hall.
+ 
+A group of prisoners is building a barricade in the kitchen. They ask you if you want to join them, but you decline the invitation for fear of being stuck between a wall and a difficult situation. 
+One of the group throws you a metal tray, so you can protect yourself if you encounter problems. You appreciate the gesture.
 
 9 -1 13 -1 -1 -1 -1 1
-You're in the guards' room. Upon entering you immediately notice a birthday cake and a body, ironically the jailer died on the same day he celebrated his 50th birthday. This is where you find the console that unlocks the exit gate. You approach it and notice a prompt in the terminal asking for a four-digit password, if you only knew where to start ... but wait maybe you know where to start, after all people will always be people.
+You're in the guards' room.
+ 
+Upon entering you immediately notice a birthday cake and a body, ironically the jailer died on the same day he celebrated his 50th birthday. 
+This is where you find the console that unlocks the exit gate. You approach it and notice a prompt in the terminal asking for a four-digit password, if you only knew where to start ... 
+but wait maybe you know where to start, after all people will always be people.
 
 -1 -1 -1 12 -1 -1 -1 -1
-You're in front of the exit gate. The solid steel gate is securely closed. There is not the slightest possibility of leaving.
+You're in front of the exit gate. 
+ 
+The solid steel gate is securely closed. There is not the slightest possibility of leaving.
 
 -1 15 -1 -1 1 -1 -1 -1
-You are in the tunnel below the maximum security cell n.2. Behind the toilet was hidden a small hole that gives access to this tunnel that took years to dig. Where will the tunnel lead to?
+You are in the tunnel below the maximum security cell n.2. 
+ 
+Behind the toilet was hidden a small hole that gives access to this tunnel that took years to dig. Where will the tunnel lead to?
 
 14 -1 -1 -1 10 -1 -1 -1
-You're in the tunnel under the prison laundry. You see the end of the tunel covered by a metal piece.
+You're in the tunnel under the prison laundry. 
+ 
+You see the end of the tunel covered by a metal piece.
 
 -1 -1 17 -1 8 -1 -1 -1
-You are in the tunnel below the minimal security cell n.3.  All that dirt in the cell was because under the bed someone dug a tunnel, this recluse probably wanted to dig under the outer wall, but it looks like he was digging in the wrong way. Let's see where the tunnel takes you.
+You are in the tunnel below the minimal security cell n.3.
+ 
+All that dirt in the cell was because under the bed someone dug a tunnel, this recluse probably wanted to dig under the outer wall, but it looks like he was digging in the wrong way. Let's see where the tunnel takes you.
 
 -1 -1 -1 16 4 -1 -1 -1
-You're in the tunnel under the prison yard. The tunnel is unfinished and ends in the prison yard. You amuse youself thinking of a group of inmates making a glorious escape into a courtyard full of guards making rounds.
+You're in the tunnel under the prison yard. 
+ 
+The tunnel is unfinished and ends in the prison yard. You amuse youself thinking of a group of inmates making a glorious escape into a courtyard full of guards making rounds.
 
 -1 19 -1 -1 -1 3 -1 -1
-You are in an air duct above the maximum security cell n.3. The bunk bed served to get someone up here. Maybe you can get to the exit from here?
+You are in an air duct above the maximum security cell n.3. 
+ 
+The bunk bed served to get someone up here. Maybe you can get to the exit from here?
 
 18 -1 -1 -1 -1 10 -1 -1
-You are in an air duct above the prison laundry. The air duct has come to an end and you see an opening, but you realize that you are still inside the prison. Maybe you coan find something useful  down in the room.
+You are in an air duct above the prison laundry. 
+ 
+The air duct has come to an end and you see an opening, but you realize that you are still inside the prison. Maybe you coan find something useful  down in the room.
