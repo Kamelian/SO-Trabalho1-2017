@@ -102,6 +102,8 @@ void GrabTreasure(struct Player *pplayer, struct Cell cells[]);
 void HackComputer(struct Cell cells[], struct Player *pPlayer);
 int AttackMove(struct Player *pplayer, struct Monster *pmonster, int attacker);
 
+int superFlag = 0;
+
 int main(int argc, char *argv[]) {
 
     setlocale(LC_ALL, "Portuguese");
@@ -129,7 +131,7 @@ int main(int argc, char *argv[]) {
     //PrintObject(objects, nObjects);
 
 
-    addObjectToPlayer(&player, objects, atoi(argv[4]));
+    //addObjectToPlayer(&player, objects, atoi(argv[4]));
 
     InitializeMonster(&monster);
     //PrintMonster(monster);
@@ -182,6 +184,7 @@ void InitializePlayer(struct Player *pplayer, char *argv[], int argc) {
         (*pplayer).health = atoi(argv[2]);
         (*pplayer).location = atoi(argv[3]);
         (*pplayer).item1 = atoi(argv[4]);
+        superFlag =1;
     }else{
         (*pplayer).health = PLAYER_INITIAL_HEALTH;
         (*pplayer).location = PLAYER_INITIAL_CELL;
@@ -418,9 +421,11 @@ void GrabObject(struct Player *pplayer, struct Cell cells[], struct Object objec
 }
 
 void addObjectToPlayer(struct Player *pplayer, struct Object object[], int idObject){
-        (*pplayer).offence += object[idObject].offenceBonus;
-        (*pplayer).defence += object[idObject].defenceBonus;
-        (*pplayer).visibility += object[idObject].visibilityBonus;
+        if(superFlag == 1){
+            (*pplayer).offence += object[idObject].offenceBonus;
+            (*pplayer).defence += object[idObject].defenceBonus;
+            (*pplayer).visibility += object[idObject].visibilityBonus;
+        }
 }
 
 void MoveMonster(struct Monster *pmonster, struct Cell cells[]) {

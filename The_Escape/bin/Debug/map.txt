@@ -1,26 +1,33 @@
 -1 3 -1 -1 -1 -1  -1 -1
-You are in the familiar confines of your cell. After nine years watching the sky through those bars,you still ask yourself: "Why do i have to pay for another men's crime.
+You are in the familiar confines of your cell.
+After nine years watching the sky through those bars,you still ask yourself: "Why do i have to pay for another men's crime.
 
 -1 -1 -1 3 -1 14  -1 -1
-You are in maximum security cell n.2. The cell organization of the bank robber, whom you consider your only friend in this hell hole, fell's upon you. But you notice something strange!
+You are in maximum security cell n.2.
+The cell organization of the bank robber, whom you consider your only friend in this hell hole, fell's upon you. But you notice something strange!
 
 3 -1 -1 -1 18 -1 -1 -1
-You are in maximum security cell n.3. The bunk bed was put up against the wall. At first you do not understand why, but as you study the cell, you realize that there was a purpose for this action.
+You are in maximum security cell n.3.
+The bunk bed was put up against the wall. At first you do not understand why, but as you study the cell, you realize that there was a purpose for this action.
 
 0 2 1 4 -1 -1 -1 -1
-You are in maximum security block. You can see the tell tell signs from the riot group that passed trough where.
+You are in maximum security block.
+You can see the tell tell signs from the riot group that passed trough where.
 
 -1 9 3 5 -1 17 -1 -1
 You are in the prisons yard. You see some inmates hidding in the shadows, they must fear something.
 
 6 8 4 7 -1 -1 -1 -1
-You are in the minimal security block. Everything is calm here, these are not the real bad guys of this prison.
+You are in the minimal security block.
+Everything is calm here, these are not the real bad guys of this prison.
 
 -1 5 -1 -1 -1 -1 -1 -1
-You are in minimal security cell n.1. A little man tries to grab you from behind, but you easily subjugate him. He begs you not to kill him, he's just an orderly dick. 
+You are in minimal security cell n.1. 
+A little man tries to grab you from behind, but you easily subjugate him. He begs you not to kill him, he's just an orderly dick. 
 
 -1 -1 5 -1 -1 -1 0 -1
-You are in minimal security cell n.2. A scent of death attacks your nostrils. Full of wounds, he sees the lifeless body of the infamous prisoner of the cell 3. Children killers are not tolerated by the other prisoners. A metallic gleam captures your attention! a sharp screwdriver! This can be a good weapon to help you.
+You are in minimal security cell n.2.
+A scent of death attacks your nostrils. Full of wounds, he sees the lifeless body of the infamous prisoner of the cell 3. Children killers are not tolerated by the other prisoners. A metallic gleam captures your attention! a sharp screwdriver! This can be a good weapon to help you.
 
 5 -1 -1 -1 -1 16 -1 -1
 You are in minimal security cell n.3. The cell is filthy, there is dust and dirt everywhere. Something draws your attention on under the bed.
