@@ -68,8 +68,7 @@ struct Monster {
     int location;
 };
 
-//void PrintTitle();
-//void PrintTitleText();
+void PrintTitle();
 
 //Debugging methods that should be commented
 void PrintPlayer(struct Player player);
@@ -79,20 +78,15 @@ void PrintMonster(struct Monster monster);
 //End of Debugging methods
 
 // Initialization
-void InitializePlayer(struct Player *pplayer, char *argv[], int argc);
-int InitializeMap(struct Cell cells[]); //não é preciso ponteiro, porque o vector já é um ponteiro
-int InitializeObject(struct Object object[]); //, int *pnObjects);
+void InitializePlayer(struct Player *pplayer);
+void InitializeMap(struct Cell cells[], int *pnCells); //não é preciso ponteiro, porque o vector já é um ponteiro
+void InitializeObject(struct Object object[], int *pnObjects);
 void InitializeMonster(struct Monster *pmonster);
 
 // main loop
-
-void PrintTitle();
-void PrintTitleText();
-
-void MovePlayer(struct Player *pplayer, struct Cell cells[], struct Object objects[]);
+void MovePlayer(struct Player *pplayer, struct Cell cells[]);
 void MoveMonster(struct Monster *pmonster, struct Cell cells[]);
 void GrabObject(struct Player *pplayer, struct Cell cells[], struct Object object[]);
-void addObjectToPlayer(struct Player *pPlayer, struct Object object[], int idObject);
 void Combat(struct Player *pPlayer, struct Monster *pmonster);
 int EndGame(struct Player *pplayer, struct Cell cells[]);
 
@@ -102,10 +96,9 @@ void GrabTreasure(struct Player *pplayer, struct Cell cells[]);
 void HackComputer(struct Cell cells[], struct Player *pPlayer);
 int AttackMove(struct Player *pplayer, struct Monster *pmonster, int attacker);
 
-int main(int argc, char *argv[]) {
-
+int main() {
     setlocale(LC_ALL, "Portuguese");
-    system("MODE 103,1040");
+    system("MODE 100,40");
 
     struct Player player;
     struct Cell cells[MAX_CELLS];
@@ -114,86 +107,75 @@ int main(int argc, char *argv[]) {
 
     int nCells, nObjects;
 
-    //nObjects = 3;
+    nCells = 20;
+    nObjects = 3;
 
     PrintTitle();
-    PrintTitleText();
 
-    nCells = InitializeMap(cells);
-    //PrintMap(cells, nCells);
-
-    InitializePlayer(&player, argv, argc);
+    InitializePlayer(&player);
     //PrintPlayer(player);
 
-    nObjects = InitializeObject(objects); //, &nObjects);
+    InitializeMap(cells, &nCells);
+    //PrintMap(cells, nCells);
+
+    InitializeObject(objects, &nObjects);
     //PrintObject(objects, nObjects);
-
-
-    addObjectToPlayer(&player, objects, atoi(argv[4]));
 
     InitializeMonster(&monster);
     //PrintMonster(monster);
 
     while (EndGame(&player, cells) == 0) {
-        MovePlayer(&player, cells, objects);
+        MovePlayer(&player, cells);
+        GrabObject(&player, cells, objects);
         MoveMonster(&monster, cells);
         Combat(&player, &monster);
-        //ClearScreen();
+
+        //combate
+        //verificar fim de jogo
     }
 
     return 0;
 }
 
 void PrintTitle() {
-    FILE *f;
-    f = fopen("title.txt", "r");
-    char line[103];
-    while(fgets(line, sizeof(line),f) != NULL){
-        printf("%s", line);
-    }
+    printf("\n");
+    printf("   /$$$$$$$$ /$$                                                                                  \n");
+    printf("  |__  $$__/| $$                                                                                  \n");
+    printf("     | $$   | $$$$$$$   /$$$$$$         /$$$$$$   /$$$$$$$  /$$$$$$$  /$$$$$$   /$$$$$$   /$$$$$$ \n");
+    printf("     | $$   | $$__  $$ /$$__  $$       /$$__  $$ /$$_____/ /$$_____/ |____  $$ /$$__  $$ /$$__  $$\n");
+    printf("     | $$   | $$  \\ $$| $$$$$$$$      | $$$$$$$$|  $$$$$$ | $$        /$$$$$$$| $$  \\ $$| $$$$$$$$\n");
+    printf("     | $$   | $$  | $$| $$_____/      | $$_____/ \\____  $$| $$       /$$__  $$| $$  | $$| $$_____/\n");
+    printf("     | $$   | $$  | $$|  $$$$$$$      |  $$$$$$$ /$$$$$$$/|  $$$$$$$|  $$$$$$$| $$$$$$$/|  $$$$$$$\n");
+    printf("     |__/   |__/  |__/ \\_______/       \\_______/|_______/  \\_______/ \\_______/| $$____/  \\_______/\n");
+    printf("                                                                              | $$                \n");
+    printf("                                                                              | $$                \n");
+    printf("                                                                              |__/                \n");
+    printf("  ................................................................................................\n");
+    printf("  ================================================================================================\n");
+    printf("  ||   The noise wakes you up in your cell. Distant sounds of struggle indicate that something  ||\n");
+    printf("  || serious is happening. A metallic click is heard and you realize that all the doors of your ||\n");
+    printf("  ||                  cell block have been unlocked! You now have two choices:                  ||\n");
+    printf("  ||                                                                                            ||\n");
+    printf("  ||           Hide in the shadows of an unlocked cell, on a dangerous revolted prison          ||\n");
+    printf("  ||                                            OR                                              ||\n");
+    printf("  ||         Confront furious inmates and armed guards, to reach the light of the exit.         ||\n");
+    printf("  ||                                                                                            ||\n");
+    printf("  ||                               IT'S TIME TO MAKE YOUR CHOICE!                               ||\n");
+    printf("  ================================================================================================\n\n");
 }
 
-void PrintTitleText() {
-    FILE *f;
-    f = fopen("title_text.txt", "r");
-    char line[103];
-    while(fgets(line, sizeof(line),f) != NULL){
-        printf("%s", line);
-    }
-}
-
-void ClearScreen(){ //NOT USED APAGAR
-    int line;
-    int collumn;
-    for (line = 0; line <=50; line++){
-        for(collumn = 0; collumn <= 100; collumn++){
-            printf("%c",' ');
-        }
-        printf("\n");
-    }
-}
-
-void InitializePlayer(struct Player *pplayer, char *argv[], int argc) {
-    printf("\n\n  Enter your convict name: ");
-    fflush(stdin);
+void InitializePlayer(struct Player *pplayer) {
+    printf("Enter your convict name: ");
     scanf("%s", (*pplayer).name);
-
-    if(argv[1]!= '\0' && atoi(argv[1]) == 1234 && argc == 5){
-        (*pplayer).health = atoi(argv[2]);
-        (*pplayer).location = atoi(argv[3]);
-        (*pplayer).item1 = atoi(argv[4]);
-    }else{
-        (*pplayer).health = PLAYER_INITIAL_HEALTH;
-        (*pplayer).location = PLAYER_INITIAL_CELL;
-        (*pplayer).item1 = PLAYER_INITIAL_OBJECT;
-    }
-        (*pplayer).offence = PLAYER_INITIAL_OFFENCE;
-        (*pplayer).defence = PLAYER_INITIAL_DEFENSE;
-        (*pplayer).visibility = PLAYER_INITIAL_VISIBILITY;
-        (*pplayer).item2 = PLAYER_INITIAL_OBJECT;
-        (*pplayer).item3 = PLAYER_INITIAL_OBJECT;
-        (*pplayer).treasure = PLAYER_INITIAL_TREASURE;
-    //PrintPlayer(*pplayer);
+    (*pplayer).health = PLAYER_INITIAL_HEALTH;
+    (*pplayer).offence = PLAYER_INITIAL_OFFENCE;
+    (*pplayer).defence = PLAYER_INITIAL_DEFENSE;
+    (*pplayer).visibility = PLAYER_INITIAL_VISIBILITY;
+    (*pplayer).location = PLAYER_INITIAL_CELL;
+    (*pplayer).item1 = PLAYER_INITIAL_OBJECT;
+    (*pplayer).item2 = PLAYER_INITIAL_OBJECT;
+    (*pplayer).item3 = PLAYER_INITIAL_OBJECT;
+    (*pplayer).treasure = PLAYER_INITIAL_TREASURE;
 }
 
 void PrintPlayer(struct Player player) {
@@ -211,50 +193,236 @@ void PrintPlayer(struct Player player) {
     printf("\n\n");
 }
 
-int InitializeMap(struct Cell cells[]) {
-    FILE *f;
+void InitializeMap(struct Cell cells[], int *pnCells) {
+    *pnCells = 20; //define o nº de células do mapa
 
-    f = fopen("map.txt", "r");
-    int nCells = 0;
-    char line[500];
+    // Cell 0 - Maximum 1
+    cells[0].north = -1;
+    cells[0].south = 3;
+    cells[0].west = -1;
+    cells[0].east = -1;
+    cells[0].up = -1;
+    cells[0].down = -1;
+    strcpy(cells[0].cellDescription, "\nYou are in the familiar confines of your cell.\n\nAfter nine years watching the sky through those bars,you still ask yourself:\n\"Why do i have to pay for another men's crime.\"\n\n");
+    cells[0].object = -1;
+    cells[0].treasure = -1;
 
-    while(fscanf(f, "%d %d %d %d %d %d %d %d\n",
-                 &cells[nCells].north,
-                 &cells[nCells].south,
-                 &cells[nCells].west,
-                 &cells[nCells].east,
-                 &cells[nCells].up,
-                 &cells[nCells].down,
-                 &cells[nCells].object,
-                 &cells[nCells].treasure) != EOF){
+    // Cell 1 - Maximum 2
+    cells[1].north = -1;
+    cells[1].south = -1;
+    cells[1].west = -1;
+    cells[1].east = 3;
+    cells[1].up = -1;
+    cells[1].down = 14; // Tunel 1
+    strcpy(cells[1].cellDescription, "\nYou are in maximum security cell n.2.\n\nThe cell organization of the bank robber, whom you consider your only\nfriend in this hell hole, fell's upon you.\nBut you notice something strange!\n\n");
+    cells[1].object = -1;
+    cells[1].treasure = -1;
 
-        strcpy(cells[nCells].cellDescription, "");
-        while(fgets(line, sizeof(line),f) != NULL){
-            if(strcmp(line, "\n")!=0){
-                strcat(cells[nCells].cellDescription, line);
-            }else{
-                break;
-            }
-        }
-        cells[nCells].cellDescription[strlen(cells[nCells].cellDescription) - 1] = 0;
-        //printf("\n %s\n", cells[nCells].cellDescription);
-        nCells++;
-    }
+    // Cell 2 - Maximum 3
+    cells[2].north = 3;
+    cells[2].south = -1;
+    cells[2].west = -1;
+    cells[2].east = -1;
+    cells[2].up = -1;
+    cells[2].down = -1;
+    strcpy(cells[2].cellDescription, "\nYou are in maximum security cell n.3.\n\nThe bunk bed was put up against the wall. \nAt first you do not understand why, but as you study the cell, \nyou realize that there was a purpose for this action.\n");
+    cells[2].object = -1;
+    cells[2].treasure = -1;
 
-    fclose(f);
-    return nCells;
+    // Cell 3 - Maximum security block
+    cells[3].north = 0;
+    cells[3].south = 2;
+    cells[3].west = 1;
+    cells[3].east = 4;
+    cells[3].up = 18; // Airduct 1
+    cells[3].down = -1;
+    strcpy(cells[3].cellDescription, "\nYou are in maximum security block.\n\nYou can see the tell tell signs from the riot group that passed trough where.");
+    cells[3].object = -1;
+    cells[3].treasure = -1;
+
+    // Cell 4 - The yard
+    cells[4].north = -1;
+    cells[4].south = 9;
+    cells[4].west = 3;
+    cells[4].east = 5;
+    cells[4].up = -1;
+    cells[4].down = 17; // Tunel 4
+    strcpy(cells[4].cellDescription, "\nYou are in the prisons yard.\n\nYou see some inmates hidding in the shadows.");
+    cells[4].object = -1;
+    cells[4].treasure = -1;
+
+    // Cell 5 - Minimum Security Wing
+    cells[5].north = 6;
+    cells[5].south = 8;
+    cells[5].west = 4;
+    cells[5].east = 7;
+    cells[5].up = -1;
+    cells[5].down = -1;
+    strcpy(cells[5].cellDescription, "\nYou are in the minimal security block.\n\nEverything is calm here, these are not the real bad guys of this prison.");
+    cells[5].object = -1;
+    cells[5].treasure = -1;
+
+    // Cell 6 - Minimum 1
+    cells[6].north = -1;
+    cells[6].south = 5;
+    cells[6].west = -1;
+    cells[6].east = -1;
+    cells[6].up = -1;
+    cells[6].down = -1;
+    strcpy(cells[6].cellDescription, "\nYou are in minimal security cell n.1.\n\n");
+    cells[6].object = -1;
+    cells[6].treasure = -1;
+
+    // Cell 7 - Minimum 2
+    cells[7].north = -1;
+    cells[7].south = -1;
+    cells[7].west = 5;
+    cells[7].east = -1;
+    cells[7].up = -1;
+    cells[7].down = -1;
+    strcpy(cells[7].cellDescription, "\nYou are in minimum security cell n.2.\nA scent of death attacks your nostrils.\nFull of wounds, he sees the lifeless body of the infamous prisoner of the cell 3.\nChildren killers are not tolerated by the other prisoners.\nA metallic gleam captures your attention! a sharp screwdriver!\nThis can be a good weapon to help you.\n\n");
+    cells[7].object = 0; //Sharp screwdriver
+    cells[7].treasure = -1;
+
+    // Cell 8 - Minimum 3
+    cells[8].north = 5;
+    cells[8].south = -1;
+    cells[8].west = -1;
+    cells[8].east = -1;
+    cells[8].up = -1;
+    cells[8].down = 16; // Tunel 3
+    strcpy(cells[8].cellDescription, "\nYou are in minimal security cell n.3.\n\nSomething draws your attention on under the bed.");
+    cells[8].object = -1;
+    cells[8].treasure = -1;
+
+    // Cell 9 - Corridor
+    cells[9].north = 4;
+    cells[9].south = 12;
+    cells[9].west = 10;
+    cells[9].east = 11;
+    cells[9].up = -1;
+    cells[9].down = -1;
+    strcpy(cells[9].cellDescription, "Corredor");
+    cells[9].object = -1;
+    cells[9].treasure = -1;
+
+    // Cell 10 - Laundry
+    cells[10].north = -1;
+    cells[10].south = -1;
+    cells[10].west = -1;
+    cells[10].east = 9;
+    cells[10].up = 19; // Airduct 2
+    cells[10].down = -1;
+    strcpy(cells[10].cellDescription, "Estás na Lavandaria");
+    cells[10].object = 2; //uniform
+    cells[10].treasure = -1;
+
+    // Cell 11 - Mess hall
+    cells[11].north = -1;
+    cells[11].south = -1;
+    cells[11].west = 9;
+    cells[11].east = -1;
+    cells[11].up = -1;
+    cells[11].down = -1;
+    strcpy(cells[11].cellDescription, "Estás no refeitório");
+    cells[11].object = 1; // Metal tray
+    cells[11].treasure = -1;
+
+    // Cell 12 - Guards room
+    cells[12].north = 9;
+    cells[12].south = -1;
+    cells[12].west = -1;
+    cells[12].east = -1;
+    cells[12].up = -1;
+    cells[12].down = -1;
+    strcpy(cells[12].cellDescription, "Estás na sala dos guardas");
+    cells[12].object = -1;
+    cells[12].treasure = -1;
+
+    // Cell 13 - Exit Gate
+    cells[13].north = -1;
+    cells[13].south = -1;
+    cells[13].west = -1;
+    cells[13].east = -1;
+    cells[13].up = -1;
+    cells[13].down = 15; //Tunel 2
+    strcpy(cells[13].cellDescription, "Estás em frente ao portão de saída");
+    cells[13].object = -1;
+    cells[13].treasure = -1;
+
+    // Cell 14 - Tunel 1
+    cells[14].north = -1;
+    cells[14].south = 15;
+    cells[14].west = -1;
+    cells[14].east = -1;
+    cells[14].up = 1;
+    cells[14].down = -1;
+    strcpy(cells[14].cellDescription, "Estás no tunel 1");
+    cells[14].object = -1;
+    cells[14].treasure = -1;
+
+    // Cell 15 - Tunel 2
+    cells[15].north = 14;
+    cells[15].south = -1;
+    cells[15].west = -1;
+    cells[15].east = -1;
+    cells[15].up = 10; // laudry
+    cells[15].down = -1;
+    strcpy(cells[15].cellDescription, "Estás no tunel 2");
+    cells[15].object = -1;
+    cells[15].treasure = -1;
+
+    // Cell 16 - Tunel 3
+    cells[16].north = -1;
+    cells[16].south = -1;
+    cells[16].west = 17;
+    cells[16].east = -1;
+    cells[16].up = 8; // Minimum 3
+    cells[16].down = -1;
+    strcpy(cells[16].cellDescription, "Estás no tunel 3");
+    cells[16].object = -1;
+    cells[16].treasure = -1;
+
+    // Cell 17 - Tunel 4
+    cells[17].north = -1;
+    cells[17].south = -1;
+    cells[17].west = -1;
+    cells[17].east = 16;
+    cells[17].up = 4; // Yard
+    cells[17].down = -1;
+    strcpy(cells[17].cellDescription, "Estás no tunel 4");
+    cells[17].object = -1;
+    cells[17].treasure = -1;
+
+    // Cell 18 - Airduct 1
+    cells[18].north = -1;
+    cells[18].south = 19;
+    cells[18].west = -1;
+    cells[18].east = -1;
+    cells[18].up = -1;
+    cells[18].down = 3; // Maximum 3
+    strcpy(cells[18].cellDescription, "Estás na conduta de ventilação 1");
+    cells[18].object = -1;
+    cells[18].treasure = -1;
+
+    // Cell 19 - Airduct 2
+    cells[19].north = 18;
+    cells[19].south = -1;
+    cells[19].west = -1;
+    cells[19].east = -1;
+    cells[19].up = -1;
+    cells[19].down = 10; // Laundry room
+    strcpy(cells[19].cellDescription, "Estás na conduta de ventilação 2");
+    cells[19].object = -1;
+    cells[19].treasure = -1;
 }
 
 void PrintMap(struct Cell cells[], int nCells) {
     int i;
     for (i = 0; i < nCells; i++) {
-        printf("\n==== CELL %i ====", i);
-        printf("\nDescription: %s", cells[i].cellDescription);
-        printf("\nNorth: %i", cells[i].north);
-        printf("\nEast: %i", cells[i].east);
-        printf("\nSouth: %i", cells[i].south);
-        printf("\nWest: %i", cells[i].west);
+        printf("\n==== CELL %i - %s ====", i, cells[i].cellDescription);
         printf("\nUp: %i", cells[i].up);
+        printf("\nNorth: %i\tWest: %i\tSouth: %i\tEast: %i", cells[i].north, cells[i].west, cells[i].south, cells[i].east);
         printf("\nDown: %i", cells[i].down);
         printf("\nObject: %i", cells[i].object);
         printf("\nTresaure: %i", cells[i].treasure);
@@ -262,16 +430,13 @@ void PrintMap(struct Cell cells[], int nCells) {
     }
 }
 
-int InitializeObject(struct Object object[]){ //, int *pnObjects) {
-    int nObjects = 0;
-
+void InitializeObject(struct Object object[], int *pnObjects) {
     // Object 0
     strcpy(object[0].name, "Sharp screwdriver");
     object[0].healthBonus = 0;
     object[0].offenceBonus = 50;
     object[0].defenceBonus = 0;
     object[0].visibilityBonus = 0;
-    nObjects++;
 
     // Object 1
     strcpy(object[1].name, "Metal tray");
@@ -279,7 +444,6 @@ int InitializeObject(struct Object object[]){ //, int *pnObjects) {
     object[1].offenceBonus = 0;
     object[1].defenceBonus = 50;
     object[1].visibilityBonus = 0;
-    nObjects++;
 
     // Object 2
     strcpy(object[2].name, "prision guard uniform");
@@ -287,9 +451,6 @@ int InitializeObject(struct Object object[]){ //, int *pnObjects) {
     object[2].offenceBonus = 0;
     object[2].defenceBonus = 0;
     object[2].visibilityBonus = -1;
-    nObjects++;
-
-    return nObjects;;
 }
 
 void PrintObject(struct Object object[], int nObjects) {
@@ -323,10 +484,7 @@ void PrintMonster(struct Monster monster) {
     printf("\n\n");
 }
 
-void MovePlayer(struct Player *pplayer, struct Cell cells[], struct Object objects[]) {
-
-    printf("\n  ##################################################################################################  \n");
-
+void MovePlayer(struct Player *pplayer, struct Cell cells[]) {
     char moveOptions[60] = "What door do you want to cross?";
     char moveNorth[5] = " [N]";
     char moveEast[5] = " [E]";
@@ -384,7 +542,8 @@ void MovePlayer(struct Player *pplayer, struct Cell cells[], struct Object objec
 
     printf("\n%s", cells[(*pplayer).location].cellDescription);
 
-    GrabObject(&*pplayer,cells, objects);
+    //O método GRABOBJECT podia ser chamado aqui dentro??
+    //Assim o GRABOBJECT não precisava de ser executado em cada iteração do loop while que existe no main.
 
     //O método GRABTRESAURE podia ser chamado aqui e o GRABTRESAURE chamava o HACK COMPUTER?
     //Parece fazer mais sentido com o enunciado, o jogador apanha o tesouro (só quando o encontra), não existe condição a correr no while Loop do main
@@ -401,7 +560,9 @@ void GrabObject(struct Player *pplayer, struct Cell cells[], struct Object objec
     if(cells[(*pplayer).location].object != -1) {
         printf("You have found a %s\n", object[cells[(*pplayer).location].object].name );
 
-        addObjectToPlayer(&*pplayer, object, cells[(*pplayer).location].object);
+        (*pplayer).offence += object[cells[(*pplayer).location].object].offenceBonus;
+        (*pplayer).defence += object[cells[(*pplayer).location].object].defenceBonus;
+        (*pplayer).visibility += object[cells[(*pplayer).location].object].visibilityBonus;
 
         printf("Has you grab the item you feel a new strenght\n");
         printf("Offence: %d\tDefence: %d\t Visibility:%d\n", (*pplayer).offence, (*pplayer).defence, (*pplayer).visibility);
@@ -415,12 +576,6 @@ void GrabObject(struct Player *pplayer, struct Cell cells[], struct Object objec
         }
         PrintPlayer(*pplayer);  //DEBUGGING
     }
-}
-
-void addObjectToPlayer(struct Player *pplayer, struct Object object[], int idObject){
-        (*pplayer).offence += object[idObject].offenceBonus;
-        (*pplayer).defence += object[idObject].defenceBonus;
-        (*pplayer).visibility += object[idObject].visibilityBonus;
 }
 
 void MoveMonster(struct Monster *pmonster, struct Cell cells[]) {
@@ -528,7 +683,7 @@ void GrabTreasure(struct Player *pplayer, struct Cell cells[]) {
 }
 
 void HackComputer(struct Cell cells[], struct Player *pPlayer) {
-    printf("Remenber people will allways be people\n");
+    printf("Hack as started\n");
     char date[10];
     char buffer[20];
     time_t t = time(NULL);
@@ -553,20 +708,17 @@ void HackComputer(struct Cell cells[], struct Player *pPlayer) {
         scanf("%s", answer);
 
         if (strcmp(answer, date)!=0) {
-            printf("INCORRECT CODE\n");
+            printf("Wrong code\n");
             counter--;
             printf("\nYou have %d tries\n", counter);
         } else if(strcmp(answer, date)==0) {
-            printf("CORREC CODE\n");
+            printf("Accepted code\n");
             cells[12].west = 13;
             pPlayer->treasure = 1;
             counter=0;
-            printf("|nYou ear a loud unocking sound from outside the guard's room. You've just got the code right and the exit gate his opening.");
-
-            //MUDAR DESCRIÇÂO DA CELULA 13
-
+            printf("A DOOR JUST OPEN");
         } else {
-            printf("\nHACK FALIED!");
+            printf("HACK FALIED!");
         }
 
     } while (counter>0);

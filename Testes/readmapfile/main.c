@@ -39,7 +39,7 @@ int InitializeMapFile(struct Cell cells[]){
 
     f = fopen("map.txt", "r");
     int nCells = 0;
-    char line[255];
+    char line[500];
 
     while(fscanf(f, "%d %d %d %d %d %d %d %d\n",
                  &cells[nCells].north,
